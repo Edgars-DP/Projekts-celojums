@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% include 'modules/head.html' %}
+	<title>Ceļojums</title>
+</head>
+<body style="background-image: url('https://cdn.statically.io/i/images.pexels.com/w=1920,h=1080/photos/1139040/pexels-photo-1139040.jpeg');background-repeat: no-repeat;background-position: center;background-size: cover;height: 100vh;">
+	{% include 'modules/nav.html' %}
+	<div class="m-20 bg-black bg-opacity-60 p-5 w-max text-3xl text-white">Apceļo pasauli tikai klikšķa attālumā!</div>
+	<ul class="w-max">
+		{% for valsts in valstis %}
+			<li class="text-2xl text-white bg-black bg-opacity-60 m-8 p-4 -ml-10 w-full hover:bg-opacity-100 hover:translate-x-10 transition-colors transition-transform duration-300 cursor-pointer pl-16 pr-8 whitespace-nowrap" id="v{{loop.index0}}">{{valsts[0]}}</li>
+			<!--Uzlēcējs-->
+			<div class="bg-opacity-60 bg-black absolute w-screen h-screen top-0 left-0 flex hidden items-center justify-center" id="mv{{loop.index0}}">
+				<div class="bg-white rounded-md h-96 w-80">
+					<h1 class="text-center text-3xl font-bold pb-5">{{valsts[0]}}</h1>
+					<p class="p-3">{{valsts[1]}}</p>
+				</div>
+			</div>
+		{% endfor %}
+	</ul>
+</body>
+<script defer>
+	//Parāda popupja nospiesta poga
+	$("li").on("click", function(){
+		let popup = $("#m"+$(this).attr("id"))
+		popup.removeClass("hidden")
+			.on("click", function(ev){
+				//Noņem tikai ja uzklikšķina uz fona
+				if($(ev.target).is(popup)) $(this).addClass("hidden")
+			})
+	})
+</script>
+</html>
