@@ -32,7 +32,6 @@
 				//Noņem tikai ja uzklikšķina uz fona
 				if($(ev.target).is(popup)){
 					popup
-						.removeClass("scale-100")
 						.addClass(effclasses)
 					setTimeout(()=>popup.addClass("hidden").removeClass(effclasses), 500)
 				}
