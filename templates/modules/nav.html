@@ -1,0 +1,12 @@
+<nav class="flex items-center p-2 w-screen h-min bg-gray-100">
+	<img src="https://via.placeholder.com/500" alt="Logo" class="w-auto h-24">
+	<ul class="m-auto">
+		{% for nav in ["Avio ceļojumi","Atpūtas ceļojumi","Kruīzi"] %}
+			<a href="{{ nav.lower().replace(' ', '_') }}">
+				<li 
+					class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black hover:text-white hover:bg-black"
+				>{{nav}}</li>
+			</a>
+		{% endfor %}
+	</ul>
+</nav>
