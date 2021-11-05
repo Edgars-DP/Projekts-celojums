@@ -98,7 +98,7 @@ def unsetadmin():
     return resp
 
 @app.route("/adm", methods=['GET'])
-def amiadmin():
+def amiadmin(): 
     resp = make_response(render_template(
         'redirToHome.html', 
         msg=str(is_admin(request))
