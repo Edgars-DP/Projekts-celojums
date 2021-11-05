@@ -35,5 +35,4 @@ CREATE TABLE admins (sesija text);
 
 con.commit()
 
-def db_exec(query):
-	return tr.execute(query)
+con.close()
