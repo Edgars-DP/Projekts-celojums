@@ -4,19 +4,13 @@
 	{% include 'modules/head.html' %}
 	<title>Ceļojumi</title>
 	<script>
-		function dabut_viesnicas(valsts) {
-			return [
-				valsts+"viesnica",
-				valsts+"viesnica",
-				valsts+"viesnica",
-				valsts+"viesnica",
-				valsts+"viesnica",
-				valsts+"viesnica",
-			]
+		async function dabut_viesnicas(valsts) {
+			if(valsts=="none") return []
+			return await fetch("http://localhost:5000/api/viesnicas/"+valsts).then(x => x.json()).then(x => x.map(y=>y[0]))
 		}
 	</script>
 </head>
-<body x-data="{valsts:'Meksika', datums:'', viesnica:'none'}">
+<body x-data="{valsts:'none', datums:'', viesnica:''}">
 	<nav class="flex items-center p-2 w-screen h-min bg-gray-100">
 		<img src="https://via.placeholder.com/500" alt="Logo" class="w-auto h-24">
 		<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-full">{{ veids }}</div>
@@ -24,16 +18,32 @@
 			<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-max hover:text-white hover:bg-black">Atpakaļ</div>
 		</a>
 	</nav>
-	<div>
-		<select name="Galamērķis" id="dd_valsts" x-model="valsts" @change="viesnica='none'">
+	<div class="flex">
+		<select 
+			name="Galamērķis" 
+			id="dd_valsts" 
+			x-model="valsts" 
+			@change="$('#dd-hotel').val('none')"
+			class="h-11 w-full inline-block text-center text-xl border-2 text-black bg-transparent border-2 border-black hover:text-white hover:bg-black transition duration-100 flex-1 m-5"
+		>
+			<option value="none" disabled selected>Valsts</option>
 			{% for valsts in ["ASV","Francija","Meksika"] %}
 				<option value="{{valsts}}">{{valsts}}</option>
 			{% endfor %}
 		</select>
-		<input type="date" name="Datums" id="dd-date">
-		<select name="Viesnīca" id="dd-hotel">
-			<option value="none" selected disabled>Izvēlies viesnīcu</option>
-			<template x-for="dd_viesnica in dabut_viesnicas(valsts)">
+		<input 
+			type="date" 
+			name="Datums" 
+			id="dd-date"
+			class="h-11 w-full inline-block text-center text-xl border-2 text-black bg-transparent border-2 border-black hover:text-white hover:bg-black transition duration-100 flex-1 m-5"
+		>
+		<select 
+			name="Viesnīca" 
+			id="dd-hotel"
+			class="h-11 w-full inline-block text-center text-xl border-2 text-black bg-transparent border-2 border-black hover:text-white hover:bg-black transition duration-100 flex-1 m-5"
+		>
+			<option value="none" disabled selected>Viesnīca</option>
+			<template x-for="dd_viesnica in await dabut_viesnicas(valsts)">
 				<option x-bind:value="dd_viesnica" x-text="dd_viesnica"></option>
 			</template>
 		</select>

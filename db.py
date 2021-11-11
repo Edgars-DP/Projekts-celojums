@@ -39,16 +39,16 @@ if(len(tr.execute("SELECT * FROM viesnicas").fetchall()) == 0):
 				("ASV-viesnica3", "ASV"),
 				("ASV-viesnica4", "ASV"),
 				("ASV-viesnica5", "ASV"),
-				("francija-viesnica1", "francija"),
-				("francija-viesnica2", "francija"),
-				("francija-viesnica3", "francija"),
-				("francija-viesnica4", "francija"),
-				("francija-viesnica5", "francija"),
-				("meksika-viesnica1", "meksika"),
-				("meksika-viesnica2", "meksika"),
-				("meksika-viesnica3", "meksika"),
-				("meksika-viesnica4", "meksika"),
-				("meksika-viesnica5", "meksika");
+				("francija-viesnica1", "Francija"),
+				("francija-viesnica2", "Francija"),
+				("francija-viesnica3", "Francija"),
+				("francija-viesnica4", "Francija"),
+				("francija-viesnica5", "Francija"),
+				("meksika-viesnica1", "Meksika"),
+				("meksika-viesnica2", "Meksika"),
+				("meksika-viesnica3", "Meksika"),
+				("meksika-viesnica4", "Meksika"),
+				("meksika-viesnica5", "Meksika");
 	""")
 
 # Administratora pieejas
