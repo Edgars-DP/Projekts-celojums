@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% include 'modules/head.html' %}
+	<title>Ceļojumi</title>
+	<script>
+		function dabut_viesnicas(valsts) {
+			return [
+				valsts+"viesnica",
+				valsts+"viesnica",
+				valsts+"viesnica",
+				valsts+"viesnica",
+				valsts+"viesnica",
+				valsts+"viesnica",
+			]
+		}
+	</script>
+</head>
+<body x-data="{valsts:'Meksika', datums:'', viesnica:'none'}">
+	<nav class="flex items-center p-2 w-screen h-min bg-gray-100">
+		<img src="https://via.placeholder.com/500" alt="Logo" class="w-auto h-24">
+		<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-full">{{ veids }}</div>
+		<a href="/piedzivojums">
+			<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-max hover:text-white hover:bg-black">Atpakaļ</div>
+		</a>
+	</nav>
+	<div>
+		<select name="Galamērķis" id="dd_valsts" x-model="valsts" @change="viesnica='none'">
+			{% for valsts in ["ASV","Francija","Meksika"] %}
+				<option value="{{valsts}}">{{valsts}}</option>
+			{% endfor %}
+		</select>
+		<input type="date" name="Datums" id="dd-date">
+		<select name="Viesnīca" id="dd-hotel">
+			<option value="none" selected disabled>Izvēlies viesnīcu</option>
+			<template x-for="dd_viesnica in dabut_viesnicas(valsts)">
+				<option x-bind:value="dd_viesnica" x-text="dd_viesnica"></option>
+			</template>
+		</select>
+	</div>
+	<p x-text="valsts"></p>
+</body>
+</html>

@@ -2,6 +2,7 @@ from flask import Flask, render_template, make_response, request, g
 from random import randint
 import sqlite3
 import db
+import json
 
 app = Flask(__name__)
 
@@ -56,6 +57,18 @@ def homepage():
         valstis=get_db().cursor().execute("select * from valstis").fetchall()
     )
 
+@app.route("/piedzivojums/<veids>")
+def renderpiedzivojums(veids):
+	piedzivojumi = ["Avio ceļojumi","Atpūtas ceļojumi","Kruīzi"]
+	if veids in piedzivojumi:
+		return render_template("ceļojumi.html", veids=veids)
+
+
+@app.route("/api/viesnicas/<valsts>")
+def viesnicasvalsti(valsts):
+	return json.dumps(
+		get_db().execute("SELECT * FROM viesnicas WHERE valsts=?;", [valsts]).fetchall()
+	)
 
 
 # ============================================================================
