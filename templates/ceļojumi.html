@@ -6,7 +6,7 @@
 	<script>
 		async function dabut_viesnicas(valsts) {
 			if(valsts=="none") return []
-			return await fetch("http://localhost:5000/api/viesnicas/"+valsts).then(x => x.json()).then(x => x.map(y=>y[0]))
+			return await fetch("/api/viesnicas/"+valsts).then(x => x.json()).then(x => x.map(y=>y[0]))
 		}
 	</script>
 </head>
@@ -35,12 +35,16 @@
 			type="date" 
 			name="Datums" 
 			id="dd-date"
+			x-model="datums"
+			:disabled="valsts=='none'"
 			class="h-11 w-full inline-block text-center text-xl border-2 text-black bg-transparent border-2 border-black hover:text-white hover:bg-black transition duration-100 flex-1 m-5"
 		>
 		<select 
 			name="Viesnīca" 
 			id="dd-hotel"
 			class="h-11 w-full inline-block text-center text-xl border-2 text-black bg-transparent border-2 border-black hover:text-white hover:bg-black transition duration-100 flex-1 m-5"
+			x-model="viesnica"
+			:disabled="!(valsts && datums)"
 		>
 			<option value="none" disabled selected>Viesnīca</option>
 			<template x-for="dd_viesnica in await dabut_viesnicas(valsts)">
@@ -48,6 +52,16 @@
 			</template>
 		</select>
 	</div>
-	<p x-text="valsts"></p>
+	<div class="w-9/12 h-64 block relative mx-auto shadow-black shadow-lg border-2 border-black p-2" x-show="valsts && viesnica && datums" >
+		<img src="https://via.placeholder.com/500x500" class="h-60 float-left p-2">
+		<h1 x-text="viesnica" class="text-3xl"></h1>
+		<p>
+			Datums: <span x-text="datums"></span> <br/>
+			Cena: <span x-text="await fetch(`/api/viesnicas/${valsts}/cena/${viesnica}`).then(x=>x.json()).then(x=>x[0][0])"></span> Eur naktī
+		</p>
+		<a x-bind:href="`/rezervet?valsts=${valsts}&datums=${datums}&viesnica=${viesnica}&back=${location.pathname}`">
+			<button class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-max hover:text-white hover:bg-black absolute bottom-1 right-1">Rezervēt!</button>
+		</a>
+	</div>
 </body>
 </html>

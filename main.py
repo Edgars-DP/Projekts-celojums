@@ -63,11 +63,21 @@ def renderpiedzivojums(veids):
 	if veids in piedzivojumi:
 		return render_template("ceļojumi.html", veids=veids)
 
+@app.route("/rezervet")
+def rezervet():
+	return render_template("rezervet.html")
+
 
 @app.route("/api/viesnicas/<valsts>")
 def viesnicasvalsti(valsts):
 	return json.dumps(
 		get_db().execute("SELECT * FROM viesnicas WHERE valsts=?;", [valsts]).fetchall()
+	)
+
+@app.route("/api/viesnicas/<valsts>/cena/<viesnica>")
+def viesnicascenasvalsti(valsts, viesnica):
+	return json.dumps(
+		get_db().execute("SELECT nakts FROM viesnicas WHERE valsts=? AND nosaukums=?;", [valsts, viesnica]).fetchall()
 	)
 
 
