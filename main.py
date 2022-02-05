@@ -34,7 +34,10 @@ def close_connection(exception):
 
 
 def is_admin(req):
-    print(req.cookies.get('admin_sesija'))
+
+    if( req.cookies.get('admin_sesija') == 0 ): 
+        return False
+
     if(
         get_db().cursor().execute(
             "SELECT * FROM admins WHERE sesija = ?;", 
@@ -42,6 +45,7 @@ def is_admin(req):
         ).fetchone() == None
     ):
         return False
+
     return True
 
 
@@ -54,7 +58,8 @@ def splashpage():
 def homepage():
     return render_template(
         'piedzivojums.html', 
-        valstis=get_db().cursor().execute("select * from valstis").fetchall()
+        valstis=get_db().cursor().execute("select * from valstis").fetchall(),
+        admin=is_admin(request)
     )
 
 @app.route("/piedzivojums/<veids>")
@@ -91,7 +96,7 @@ def setadmin():
         msg="Izdevās! Tu tagat esi administrators!"
     ))
 
-    if(not(is_admin(request))):
+    if(is_admin(request)):
         # Uzģenerē nejaušu skaitli
         session_cookie = randint(1111, 99999999)
         # Un ieliek to sīkdatnēs kā admintratora "paroli"

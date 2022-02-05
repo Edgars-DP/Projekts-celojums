@@ -20,6 +20,11 @@
 			</div>
 		{% endfor %}
 	</ul>
+	{% if admin %}
+		<a href="/adm/logout" class="text-white text-l absolute right-5 bottom-5 bg-red-900 p-2">Tu esi administrators. Izrakstīties!</a>
+	{% else %}
+		<a href="/adm/login" class="text-white text-l absolute right-5 bottom-5 bg-red-900 p-2">Ienākt kā administrators</a>
+	{% endif %}
 </body>
 <script defer>
 	//Parāda popupja nospiesta poga
