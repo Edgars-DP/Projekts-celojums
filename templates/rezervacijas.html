@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% include 'modules/head.html' %}
+	<meta name="is_admin" content="false">
+	<title>Ceļojums</title>
+</head>
+<body>
+	{% include 'modules/nav.html' %}
+	<ul class="text-xl list-disc pl-10 pt-10">
+		{% for rezervacija in rezervacijas %}
+			<li>{{rezervacija[0]}}, {{rezervacija[1]}}, {{rezervacija[2]}}</li>
+		{% endfor %}
+	</ul>
+</body>
+</html>

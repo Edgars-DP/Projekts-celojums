@@ -17,6 +17,10 @@ tr.execute("""
 CREATE TABLE IF NOT EXISTS viesnicas (nosaukums text, valsts text, nakts INT);
 """)
 
+tr.execute("""
+CREATE TABLE IF NOT EXISTS rezervacijas (valsts text, viesnica text, datums text);
+""")
+
 if(len(tr.execute("SELECT * FROM valstis").fetchall()) == 0):
 	# Noklusējuma vērtības ja pirmo reizi izveido
 	tr.execute("""

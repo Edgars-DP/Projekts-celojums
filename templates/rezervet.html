@@ -9,7 +9,7 @@
 		<a href="/">
 			<img src="https://via.placeholder.com/500" alt="Logo" class="h-auto w-24">
 		</a>
-		<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-full">Rezervēt</div>
+		<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-full">Viesnīca ir rezervēta!</div>
 		<a :href="back">
 			<div class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-max hover:text-white hover:bg-black">Atpakaļ</div>
 		</a>
@@ -19,12 +19,6 @@
 			<b>Valsts: </b><span x-text="valsts"></span><br>
 			<b>Datums: </b><span x-text="datums"></span><br>
 			<b>Samaksa: </b><span x-text="await fetch(`/api/viesnicas/${valsts}/cena/${viesnica}`).then(x=>x.json()).then(x=>x[0][0])"></span> Eur
-
-			<a href="#">
-				<button class="transition duration-100 inline-block p-2 m-3 w-80 text-3xl text-center text-black bg-transparent border-2 border-black block w-max hover:text-white hover:bg-black absolute bottom-1 left-1">
-					Apstiprināt!
-				</button>
-			</a>
 		</p>
 	</div>
 </body>

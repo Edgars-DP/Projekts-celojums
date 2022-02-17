@@ -35,12 +35,12 @@ def close_connection(exception):
 
 def is_admin(req):
 
-    if( req.cookies.get('admin_sesija') == 0 ): 
+    if(req.cookies.get('admin_sesija') == 0):
         return False
 
     if(
         get_db().cursor().execute(
-            "SELECT * FROM admins WHERE sesija = ?;", 
+            "SELECT * FROM admins WHERE sesija = ?;",
             [req.cookies.get('admin_sesija')]
         ).fetchone() == None
     ):
@@ -57,33 +57,51 @@ def splashpage():
 @app.route("/piedzivojums")
 def homepage():
     return render_template(
-        'piedzivojums.html', 
+        'piedzivojums.html',
         valstis=get_db().cursor().execute("select * from valstis").fetchall(),
         admin=is_admin(request)
     )
 
+
 @app.route("/piedzivojums/<veids>")
 def renderpiedzivojums(veids):
-	piedzivojumi = ["Avio ceļojumi","Atpūtas ceļojumi","Kruīzi"]
-	if veids in piedzivojumi:
-		return render_template("ceļojumi.html", veids=veids)
+    piedzivojumi = ["Avio ceļojumi", "Atpūtas ceļojumi", "Kruīzi"]
+    if veids in piedzivojumi:
+        return render_template("ceļojumi.html", veids=veids)
+
 
 @app.route("/rezervet")
 def rezervet():
-	return render_template("rezervet.html")
+    a = request.args
+    # valsts=Francija&datums=2022-02-10&viesnica=francija-viesnica3&back=/piedzivojums/Kru%C4%ABzi
+    # valsts text, viesnica text, datums text
+    print([a.get("valsts"), a.get("viesnica"), a.get("datums")])
+    get_db().cursor().execute("INSERT INTO rezervacijas VALUES (?, ?, ?)",
+                              [a.get("valsts"), a.get("viesnica"), a.get("datums")])
+    get_db().commit()
+    return render_template("rezervet.html")
+
+
+@app.route("/rezervacijas")
+def rezervacijas():
+    print(get_db().cursor().execute("select * from rezervacijas").fetchall())
+    return render_template("rezervacijas.html", rezervacijas=get_db().cursor().execute("select * from rezervacijas").fetchall())
 
 
 @app.route("/api/viesnicas/<valsts>")
 def viesnicasvalsti(valsts):
-	return json.dumps(
-		get_db().execute("SELECT * FROM viesnicas WHERE valsts=?;", [valsts]).fetchall()
-	)
+    return json.dumps(
+        get_db().execute(
+            "SELECT * FROM viesnicas WHERE valsts=?;", [valsts]).fetchall()
+    )
+
 
 @app.route("/api/viesnicas/<valsts>/cena/<viesnica>")
 def viesnicascenasvalsti(valsts, viesnica):
-	return json.dumps(
-		get_db().execute("SELECT nakts FROM viesnicas WHERE valsts=? AND nosaukums=?;", [valsts, viesnica]).fetchall()
-	)
+    return json.dumps(
+        get_db().execute("SELECT nakts FROM viesnicas WHERE valsts=? AND nosaukums=?;",
+                         [valsts, viesnica]).fetchall()
+    )
 
 
 # ============================================================================
@@ -92,7 +110,7 @@ def viesnicascenasvalsti(valsts, viesnica):
 @app.route("/adm/login", methods=['POST', 'GET'])
 def setadmin():
     resp = make_response(render_template(
-        'redirToHome.html', 
+        'redirToHome.html',
         msg="Izdevās! Tu tagat esi administrators!"
     ))
 
@@ -100,7 +118,8 @@ def setadmin():
         # Uzģenerē nejaušu skaitli
         session_cookie = randint(1111, 99999999)
         # Un ieliek to sīkdatnēs kā admintratora "paroli"
-        get_db().cursor().execute("INSERT INTO admins VALUES (?)", [session_cookie])
+        get_db().cursor().execute(
+            "INSERT INTO admins VALUES (?)", [session_cookie])
         resp.set_cookie('admin_sesija', str(session_cookie))
         resp.set_data(render_template(
             'redirToHome.html',
@@ -109,26 +128,28 @@ def setadmin():
 
     return resp
 
+
 @app.route("/adm/logout", methods=['POST', 'GET'])
 def unsetadmin():
     resp = make_response(render_template(
-        'redirToHome.html', 
+        'redirToHome.html',
         msg="Tu tiec izraktīts!"
     ))
 
     if(not(is_admin(request))):
         get_db().cursor().execute(
-            "DELETE FROM admins WHERE sesija = ?;", 
+            "DELETE FROM admins WHERE sesija = ?;",
             [request.cookies.get('admin_sesija')]
         )
         resp.set_cookie('admin_sesija', "0")
 
     return resp
 
+
 @app.route("/adm", methods=['GET'])
 def amiadmin():
     resp = make_response(render_template(
-        'redirToHome.html', 
+        'redirToHome.html',
         msg=str(is_admin(request))
     ))
     return resp
