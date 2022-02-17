@@ -1,4 +1,4 @@
-from flask import Flask, render_template, make_response, request, g
+from flask import Flask, redirect, render_template, make_response, request, g
 from random import randint
 import sqlite3
 import db
@@ -79,6 +79,14 @@ def rezervet():
     get_db().cursor().execute("INSERT INTO rezervacijas VALUES (?, ?, ?)",
                               [a.get("valsts"), a.get("viesnica"), a.get("datums")])
     get_db().commit()
+    return redirect(
+        "/rezervets?"
+        +bytes.decode(request.query_string), 
+        301
+    )
+
+@app.route("/rezervets")
+def rezervets():
     return render_template("rezervet.html")
 
 
