@@ -7,10 +7,26 @@
 </head>
 <body>
 	{% include 'modules/nav.html' %}
+	<table class="w-9/12 m-auto table-auto mt-10 rounded-t-md overflow-hidden">
+		<thead class=" border-gray-800 border-b-solid border-0 border-b-2 bg-gray-300">
+			<tr>
+				<th>Valsts</th>
+				<th>Viesnīca</th>
+				<th>Datums</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for rezervacija in rezervacijas %}
+				<tr class="text-center bg-gray-100 border-gray-300 border-0 border-b-solid border-b-2">
+					<td>{{rezervacija[0]}}</td>
+					<td>{{rezervacija[1]}}</td>
+					<td>{{rezervacija[2]}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	<ul class="text-xl list-disc pl-10 pt-10">
-		{% for rezervacija in rezervacijas %}
-			<li>{{rezervacija[0]}}, {{rezervacija[1]}}, {{rezervacija[2]}}</li>
-		{% endfor %}
+		
 	</ul>
 </body>
 </html>
